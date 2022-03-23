@@ -1,0 +1,38 @@
+import requests
+import csv
+import datetime
+from bs4 import BeautifulSoup
+from itertools import chain
+from url import URL
+
+url = URL.url
+r = requests.get(url)
+soup = BeautifulSoup(r.text, 'html.parser')
+
+table = soup.find('table', border='1', style='border: 1px #cccccc;')
+
+file_name = 'chp-' + str(datetime.datetime.today().date())
+csv_writer = csv.writer(open(file_name, 'w'))
+header = []
+data = []
+row_data = []
+
+for tab in table.find_all('tbody'):
+    rows = tab.find_all('tr')
+    for row in rows:
+        th = row.find_all('th', class_=['dnstabletxt', 'dnstablewhitetitletxt', 'dnstabletitletxt'])
+        td = row.find_all('td', class_=['dnstabletxt', 'dnstablewhitetitletxt','dnstabletitletxt'])
+        header = [x.text for x in th]
+        data = [x.text for x in td]
+        if len(header) > 2:
+            csv_writer.writerow(header)
+        if len(header) <= 2:
+            for i in range(len(header)):
+                row_data = [[header[i]]]
+        if row_data:
+            row_data.append([x for x in data])
+            csv_writer.writerow(list(chain.from_iterable(row_data)))
+
+
+
+
