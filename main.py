@@ -3,14 +3,19 @@ import csv
 import datetime
 from bs4 import BeautifulSoup
 from itertools import chain
+import sys
+import os
 
-url = "https://www.chp.gov.hk/en/statistics/data/10/26/43/6994.html"
-r = requests.get(url)
+url = 'https://www.chp.gov.hk/en/statistics/data/10/26/43/6994.html'
+r = requests.get(str(sys.argv[1]))
 soup = BeautifulSoup(r.text, 'html.parser')
 
 table = soup.find('table', border='1', style='border: 1px #cccccc;')
 
-file_name = 'chp-' + str(datetime.datetime.today().date())+'.csv'
+file_name = 'chp-' + str(datetime.datetime.today().date()) + '.csv'
+curr_path = os.getcwd()
+full_path = os.path.join(curr_path, file_name)
+print(full_path)
 csv_writer = csv.writer(open(file_name, 'w'))
 header = []
 data = []
@@ -30,8 +35,9 @@ for tab in table.find_all('tbody'):
                 row_data = [[header[i]]]
         if row_data:
             row_data.append([x for x in data])
-            csv_writer.writerow(list(chain.from_iterable(row_data)))
-
+            file = csv_writer.writerow(list(chain.from_iterable(row_data)))
+            with open(full_path, 'w') as f:
+                f.write(str(file))
 
 
 
