@@ -6,7 +6,6 @@ from itertools import chain
 import sys
 import os
 
-url = 'https://www.chp.gov.hk/en/statistics/data/10/26/43/6994.html'
 r = requests.get(str(sys.argv[1]))
 soup = BeautifulSoup(r.text, 'html.parser')
 
