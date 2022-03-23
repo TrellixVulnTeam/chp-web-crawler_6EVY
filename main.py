@@ -10,7 +10,7 @@ soup = BeautifulSoup(r.text, 'html.parser')
 
 table = soup.find('table', border='1', style='border: 1px #cccccc;')
 
-file_name = 'chp-' + str(datetime.datetime.today().date())
+file_name = 'chp-' + str(datetime.datetime.today().date())+'.csv'
 csv_writer = csv.writer(open(file_name, 'w'))
 header = []
 data = []
