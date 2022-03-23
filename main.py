@@ -3,9 +3,8 @@ import csv
 import datetime
 from bs4 import BeautifulSoup
 from itertools import chain
-from url import URL
 
-url = URL.url
+url = "https://www.chp.gov.hk/en/statistics/data/10/26/43/6994.html"
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'html.parser')
 
